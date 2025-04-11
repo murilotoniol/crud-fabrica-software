@@ -1,5 +1,6 @@
-package com.crud.crud.entities;
+package com.crud.crud.model;
 
+import com.crud.crud.enums.Classe;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -13,21 +14,21 @@ public class Personagem {
     private Long id;
     private String nome;
     private String nomeAventureiro;
+    @Enumerated(EnumType.STRING)
     private Classe classe;
     private Integer level;
+    @OneToMany
     private List<ItemMagico> itensMagicos;
     private Integer forca;
     private Integer defesa;
 
     public Personagem(){}
 
-    public Personagem(Long id, String nome, String nomeAventureiro, Classe classe, Integer level, List<ItemMagico> itensMagicos, Integer forca, Integer defesa) {
-        this.id = id;
+    public Personagem(String nome, String nomeAventureiro, Classe classe, Integer level, Integer forca, Integer defesa) {
         this.nome = nome;
         this.nomeAventureiro = nomeAventureiro;
         this.classe = classe;
         this.level = level;
-        this.itensMagicos = itensMagicos;
         this.forca = forca;
         this.defesa = defesa;
     }
@@ -94,5 +95,17 @@ public class Personagem {
 
     public void setDefesa(Integer defesa) {
         this.defesa = defesa;
+    }
+
+    @Transient
+    public int getForcaTotal() {
+        int forcaItens = itensMagicos != null ? itensMagicos.stream().mapToInt(i -> i.getForca() != null ? i.getForca() : 0).sum() : 0;
+        return (forca != null ? forca : 0) + forcaItens;
+    }
+
+    @Transient
+    public int getDefesaTotal() {
+        int defesaItens = itensMagicos != null ? itensMagicos.stream().mapToInt(i -> i.getDefesa() != null ? i.getDefesa() : 0).sum() : 0;
+        return (defesa != null ? defesa : 0) + defesaItens;
     }
 }

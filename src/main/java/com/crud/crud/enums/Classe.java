@@ -1,4 +1,4 @@
-package com.crud.crud.entities;
+package com.crud.crud.enums;
 
 public enum Classe {
     GUERREIRO,

@@ -1,5 +1,6 @@
-package com.crud.crud.entities;
+package com.crud.crud.model;
 
+import com.crud.crud.enums.TipoItem;
 import jakarta.persistence.*;
 
 @Entity
@@ -10,9 +11,16 @@ public class ItemMagico {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String nome;
+
+    @Enumerated(EnumType.STRING)
     private TipoItem tipoItem;
+
     private Integer forca;
     private Integer defesa;
+
+    @ManyToOne
+    @JoinColumn(name = "personagem_id")
+    private Personagem personagem;
 
     public ItemMagico(){}
 
@@ -23,6 +31,8 @@ public class ItemMagico {
         this.forca = forca;
         this.defesa = defesa;
     }
+
+    // Getters e Setters
 
     public Long getId() {
         return id;
@@ -62,5 +72,13 @@ public class ItemMagico {
 
     public void setDefesa(Integer defesa) {
         this.defesa = defesa;
+    }
+
+    public Personagem getPersonagem() {
+        return personagem;
+    }
+
+    public void setPersonagem(Personagem personagem) {
+        this.personagem = personagem;
     }
 }
